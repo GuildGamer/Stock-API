@@ -1,15 +1,14 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { Request } from 'express';
+import { Controller, Get, UseGuards } from '@nestjs/common';
+import { User } from '@prisma/client';
+import { GetUser } from 'src/decorator';
+import { JwtGuard } from 'src/guard';
 
+@UseGuards(JwtGuard)
 @Controller('trade')
 export class TradeController {
 
-    @UseGuards(AuthGuard('stock-jwt'))
     @Get('all')
-    getAllMyTrades(@Req() req: Request){
-
-        const user = req.user;
+    getAllMyTrades(@GetUser('id') userId: number){
 
         return "success";
     }
