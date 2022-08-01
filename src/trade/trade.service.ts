@@ -169,7 +169,7 @@ export class TradeService {
                 return {
                         "profit":profitArray,
                         "profitSum":profitSum,
-                        "msg": null,
+                        "msg": "sucessful",
                 }
             }
 
