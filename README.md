@@ -33,8 +33,10 @@ $ npm run start:dev
  - see [postman documentation](https://documenter.getpostman.com/view/16607098/Uze1viro#793804b2-3a64-4038-9dd4-64514850cdd2) for details on "Sign In" at Auth > Sign In
 
  - get the access token
+ 
+ - Token prefix: Bearer
 
- - use the access token to send a "Get Profit" request
+ - use the access token with prefit to send a "Get Profit" request
 
  - see [postman documentation](https://documenter.getpostman.com/view/16607098/Uze1viro#7dfa9cf7-88b2-426e-b4b9-f888bf135b42) for details of the "Get profit" request at Profit > Get Profit
 
