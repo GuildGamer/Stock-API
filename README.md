@@ -7,6 +7,8 @@ $ npm install
 
 ## Configuring the app
  - rename "example.env" to ".env"
+ - uncomment DATABASE_URL and JWT_SECRET
+ - save the  changes
 
 ## Running the app
 
