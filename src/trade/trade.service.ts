@@ -74,17 +74,6 @@ export class TradeService {
         console.log("START", start)
         console.log("END", end)
 
-        // const allMarkets = await this.prisma.trade.groupBy({
-        //     by: ['market'],
-        //     where:{
-        //         userId: userId,
-        //         createdAt: {
-        //             lte: end,
-        //             gte: start,
-        //         }
-        //     }
-        // })
-
         // investment cost: total purchase cost
         try{
             const allBuy = await this.prisma.trade.findMany({
@@ -174,16 +163,9 @@ export class TradeService {
                     }
                     
                 }
-
-                // const gain_type =  profitOrLoss >= 0 ? "profit" :"loss"
                 
                 const profitSum = profitArray.reduce((a:number, b:number) => a + b, 0)
 
-                // return {
-                //     "profit": Number(profitOrLoss.toFixed(2)),
-                //     "type": gain_type,
-                //     "msg": null
-                // }
                 return {
                         "profit":profitArray,
                         "profitSum":profitSum,
