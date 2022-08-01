@@ -31,7 +31,7 @@ export class TradeService {
         }
     }
 
-    async filterTrade(userId: number, dto: FilterTradeDto){
+    async filterTrade(userId: number, dto: FilterTradeDto): Promise<Trade[]>{
 
         try{
             const start = new Date(dto.start);
@@ -65,10 +65,9 @@ export class TradeService {
         }
     }
 
-    async filterProfit(userId: number, dto: FilterTradeDto){
+    async filterProfit(userId: number, dto: FilterTradeDto): Promise<{value: number, type: string, msg: string}>{
 
-        const startDate = new Date(dto.start);
-        const start = new Date(startDate.getTime() + (1 * 60 * 60000))
+        const start = new Date(dto.start);
 
         const endDate = new Date(dto.end);
         const end = new Date(endDate.getTime() + (25 * 60 * 60000) - 1)
