@@ -36,7 +36,7 @@ $ npm run start:dev
  
  - Token prefix: Bearer
 
- - use the access token with to send a "Get Profit" request
+ - use the access token to send a "Get Profit" request
 
  - see [postman documentation](https://documenter.getpostman.com/view/16607098/Uze1viro#7dfa9cf7-88b2-426e-b4b9-f888bf135b42) for details of the "Get profit" request at Profit > Get Profit
 
