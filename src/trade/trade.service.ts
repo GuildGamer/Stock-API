@@ -65,8 +65,7 @@ export class TradeService {
         }
     }
 
-    async filterProfit(userId: number, dto: FilterTradeDto): Promise<{value: number, type: string, msg: string}>{
-
+    async filterProfit(userId: number, dto: FilterTradeDto): Promise<{profit: number [], msg: string, profitSum: number}>{
         const start = new Date(dto.start);
 
         const endDate = new Date(dto.end);
@@ -124,65 +123,77 @@ export class TradeService {
             })
 
             if (allSell.length > 0) {
-                let profitOrLoss = 0;
 
-            for (let i = 0; i < allSell.length; i++){
-                // get the list of BUY trades with the same market of the SELL trade
-                const sellMarket = allSell[i].market
+                const profitArray = []
 
-                function checkMarket(buyTrade: Trade){
-                    return buyTrade.market === sellMarket
-                }
+                for (let i = 0; i < allSell.length; i++){
+                    // get the list of BUY trades with the same market of the SELL trade
+                    const sellMarket = allSell[i].market
 
-                const allBuyWithinMarket = allBuy.filter(checkMarket)
-
-                // calculate the total cost at the time the SELL trade was performed for each market
-
-                let totalCost = 0;
-                let totalQuantity = 0;
-
-                for (let j = 0; j < allBuyWithinMarket.length; j++) {
-                    if (
-                        allBuyWithinMarket[j].createdAt <= allSell[i].createdAt
-                        ){
-                        
-                        // minus since the consideration for buying alrready has a minus sign
-                        totalCost += allBuy[j].consideration
-                        totalQuantity += allBuy[j].quantity
-
+                    function checkMarket(buyTrade: Trade){
+                        return buyTrade.market === sellMarket
                     }
+
+                    const allBuyWithinMarket = allBuy.filter(checkMarket)
+
+                    // calculate the total cost at the time the SELL trade was performed for each market
+
+                    let totalCost = 0;
+                    let totalQuantity = 0;
+
+                    for (let j = 0; j < allBuyWithinMarket.length; j++) {
+                        if (
+                            allBuyWithinMarket[j].createdAt <= allSell[i].createdAt
+                            ){
+                            
+                            // minus since the consideration for buying alrready has a minus sign
+                            totalCost += allBuy[j].consideration
+                            totalQuantity += allBuy[j].quantity
+
+                        }
+                    }
+
+                    // make the totalCost positive
+                    if(totalCost != 0){
+                        totalCost *= -1
+                    }
+
+                    // console.log(totalCost)
+                    
+                    // calculate the average cost per share for that market
+                    const costPerShare = (totalCost != 0) ? totalCost / totalQuantity : 0
+
+                    // make the sell quanity postitive
+                    let sellQuantity = allSell[i].quantity
+                    sellQuantity *= -1
+
+                    const profitOrLoss = (allSell[i].consideration - (sellQuantity * costPerShare))
+                    
+                    if (profitOrLoss > 0){
+                        profitArray.push(Number(profitOrLoss.toFixed(2)))
+                    }
+                    
                 }
 
-                // make the totalCost positive
-                if(totalCost != 0){
-                    totalCost *= -1
-                }
-
-                // console.log(totalCost)
+                // const gain_type =  profitOrLoss >= 0 ? "profit" :"loss"
                 
-                // calculate the average cost per share for that market
-                const costPerShare = (totalCost != 0) ? totalCost / totalQuantity : 0
+                const profitSum = profitArray.reduce((a:number, b:number) => a + b, 0)
 
-                // make the sell quanity postitive
-                let sellQuantity = allSell[i].quantity
-                sellQuantity *= -1
-
-                profitOrLoss += (allSell[i].consideration - (sellQuantity * costPerShare))
-            
-            }
-
-            const gain_type =  profitOrLoss >= 0 ? "profit" :"loss"
-
-            return {
-                "value": Number(profitOrLoss.toFixed(2)),
-                "type": gain_type,
-                "msg": null
-            }
+                // return {
+                //     "profit": Number(profitOrLoss.toFixed(2)),
+                //     "type": gain_type,
+                //     "msg": null
+                // }
+                return {
+                        "profit":profitArray,
+                        "profitSum":profitSum,
+                        "msg": null,
+                }
             }
 
             return {
-                "value": null,
-                "type": null,
+                "profit": [],
+                "profitSum":null,
                 "msg": "No profit or loss available"
             }
         }catch(err){

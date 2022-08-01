@@ -19,9 +19,12 @@ export class TradeController {
     filterTrade(@GetUser('id') userId: number, @Body() dto: FilterTradeDto){
         return this.tradeService.filterTrade(userId, dto);
     }
-
+    
     @Get('profit')
-    filterProfit(@GetUser('id') userId: number, @Body() dto: FilterTradeDto){
+    filterProfit(
+        @GetUser('id') userId: number, 
+        @Body() dto: FilterTradeDto, 
+        ){
         return this.tradeService.filterProfit(userId, dto);
     }
 }
