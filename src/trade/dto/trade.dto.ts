@@ -1,9 +1,9 @@
-import { IsBoolean, IsInt, IsNotEmpty, IsString } from "class-validator";
+import { IsInt, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class TradeDto {
-    @IsBoolean()
+    @IsString()
     @IsNotEmpty()
-    directionIsSell: boolean;
+    direction: string;
 
     @IsString()
     @IsNotEmpty()
@@ -17,7 +17,26 @@ export class TradeDto {
     @IsNotEmpty()
     quantity: number;
 
+    @IsNumber()
+    consideration: number;
+
     // @IsInt()
     // @IsNotEmpty()
     // userId: number;
+}
+
+export class FilterTradeDto {
+
+    @IsString()
+    @IsNotEmpty()
+    start: string;
+
+    @IsString()
+    @IsNotEmpty()
+    end: string;
+
+    @IsOptional()
+    @IsString()
+    market: string;
+
 }

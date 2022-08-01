@@ -29,10 +29,11 @@ model Trade {
   id Int @id @default(autoincrement())
   createdAt DateTime @default(now())
 
-  directionIsSell Boolean
+  direction String
   market String
   quantity Int
-  price Int
+  price Float
+  consideration Float
 
   userId Int
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
